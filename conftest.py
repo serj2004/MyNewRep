@@ -3,10 +3,10 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
 
-options = Options()
-language = None
-options.add_experimental_option('prefs', {'intl.accept_languages': language})
-browser = webdriver.Chrome(options=options)
+# options = Options()
+# language = None
+# options.add_experimental_option('prefs', {'intl.accept_languages': language})
+# browser = webdriver.Chrome(options=options)
 
 
 def pytest_addoption(parser):
@@ -31,7 +31,9 @@ def pytest_addoption(parser):
 @pytest.fixture(scope="function")
 def browser(request):
     language = request.config.getoption("language")
-    browser = webdriver.Chrome()
+    options = Options()
+    options.add_experimental_option('prefs', {'intl.accept_languages': language})
+    browser = webdriver.Chrome(options=options)
     browser.implicitly_wait(60)
     yield browser
     browser.quit()
